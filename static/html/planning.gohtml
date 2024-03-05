@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil projet Go</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+    <header>
+        <div class="currentDateTimeLayout">
+            <div class="currentDateTime">
+                <div class="currentHour">
+                    <h1></h1>
+                </div>
+                <div class="currentDate">
+                    <h2></h2>
+                </div>
+            </div>
+        </div>
+        <div class="searchBarLayout">
+            <div class="searchBar">
+                <img src="/static/src/icons/logo_search.svg" alt="search logo">
+                <input type="text" placeholder="Rechercher" onkeyup="searchEvent(this.value)">
+            </div>
+        </div>
+        <div class="logoLayout">
+            <div class="logo">
+                <a href="/logout"><img src="/static/src/icons/exit.svg" alt="logo"></a>
+            </div>
+        </div>
+        <div class="username">
+            <p>{{.Username}}</p>
+        </div>
+    </header>
+
+    <div id="searchEvent" class="container mt-3">
+        <div id="eventList"></div>
+    </div>
+
+    <main>
+        <div class="sideMenu">
+            <ol>
+                <li><a href="/createEvent">Créer un événèment</a></li>
+                <li><a href="/planning">Planning</a></li>
+                <li><a href="/createCategory">Créer une catégorie</a></li>
+                <li><a href="/logout">Déconnexion</a></li>
+            </ol>
+        </div>
+        <div class="mainData">
+            <div class="mainToolsLayout">
+                <div class="weekButton">
+                    <div class="button" onclick="showPreviousWeek()">
+                        <div class="leftArrow">
+                            <img src="/static/src/icons/arrowleft.svg" alt="left arrow">
+                        </div>
+                    </div>
+                    <div class="date">
+                        <h3></h3>
+                    </div>
+                    <div class="button" onclick="showNextWeek()">
+                        <div class="rightArrow">
+                            <img src="/static/src/icons/arrowright.svg" alt="right arrow">
+                        </div>
+                    </div>
+                </div>
+                <div class="format">
+                    <div class="button notSelected">
+                        <img src="/static/src/icons/notSelected/planning.svg" alt="planning_icon">
+                    </div>
+                    <div class="button selected">
+                        <img src="/static/src/icons/selected/list.svg" alt="list_icon">
+                    </div>
+                </div>
+            </div>
+            <div class="mainContentLayout">
+                <div class="listDay">
+                    <ol>
+                        <li><h6>Jour</h6></li>
+                        <li><h6></h6></li>
+                        <li><h6></h6></li>
+                        <li><h6></h6></li>
+                        <li><h6></h6></li>
+                        <li><h6></h6></li>
+                        <li><h6></h6></li>
+                        <li><h6></h6></li>
+                    </ol>
+                </div>
+                <div class="listEvent">
+                    <ol>
+                    <li></li>
+                    {{range $day := .DaysOfWeek}}
+                        <li>
+                            {{with index $.OrganizedEvents $day}}
+                                {{range .}}
+                                    <div class="cardEventLayout">
+                                        <div class="cardEvent">
+                                            <div class="cardHeader">
+                                                <div class="cardEventTitle">
+                                                    <h4>{{.Title}}</h4>
+                                                </div>
+                                                <div class="cardEventTime">
+                                                    <h5>{{.StartDateTime.Format "2006-01-02 15:04:05"}}</h5>
+                                                </div>
+                                                <div class="cardEventOptions">
+                                                    <a href="/settings?idEvent={{.Id}}"><img src="/static/src/icons/option.svg" alt="option"></a>
+                                                </div>
+                                            </div>
+                                            <div class="cardEventDescription">
+                                                <p>{{.Description}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{end}}
+                            {{else}}
+                                <div class="noEvent"><p>Aucun événement pour aujourd'hui.<p></div>
+                            {{end}}
+                        </li>
+                    {{end}}
+                </ol>
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
